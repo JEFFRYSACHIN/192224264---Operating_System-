@@ -1,0 +1,55 @@
+#include <stdio.h> 
+// Structure to represent a process 
+typedef struct { 
+ int pid; // Process ID 
+ int burst_Ɵme; // Burst Time of the process
+ int remaining_Ɵme; // Remaining Time of the process
+} Process; 
+// FuncƟon to perform Round Robin scheduling
+void roundRobinScheduling(Process processes[], int n, int Ɵme_quantum) {
+ int total_Ɵme = 0; // Total Ɵme passed
+ int complete = 0; // Number of processes completed 
+ // Loop unƟl all processes are completed
+ while (complete < n) { 
+ for (int i = 0; i < n; i++) { 
+ // If process has remaining Ɵme greater than 0
+ if (processes[i].remaining_Ɵme > 0) {
+ // Check if remaining Ɵme is less than or equal to Ɵme quantum
+ if (processes[i].remaining_Ɵme <= Ɵme_quantum) {
+ total_Ɵme += processes[i].remaining_Ɵme;
+ prinƞ("Process %d executed for %d units of Ɵme.\n", processes[i].pid, 
+processes[i].remaining_Ɵme);
+ processes[i].remaining_Ɵme = 0; // Process is completed
+ complete++; // Increment the number of completed processes 
+ } else { 
+ // Process runs for the Ɵme quantum
+ total_Ɵme += Ɵme_quantum;
+ processes[i].remaining_Ɵme -= Ɵme_quantum;
+ prinƞ("Process %d executed for %d units of Ɵme.\n", processes[i].pid, Ɵme_quantum);
+ } 
+ } 
+ } 
+ } 
+ prinƞ("Total Ɵme taken for all processes to complete: %d units\n", total_Ɵme);
+} 
+int main() { 
+ int n; // Number of processes 
+ int Ɵme_quantum; // Time Quantum
+ // Get the number of processes 
+ prinƞ("Enter the number of processes: ");
+ scanf("%d", &n); 
+ Process processes[n]; 
+ // Get the burst Ɵme of each process
+ for (int i = 0; i < n; i++) { 
+ processes[i].pid = i + 1; 
+ prinƞ("Enter burst Ɵme for process %d: ", i + 1);
+ scanf("%d", &processes[i].burst_Ɵme);
+ processes[i].remaining_Ɵme = processes[i].burst_Ɵme;
+ } 
+ // Get the Ɵme quantum
+ prinƞ("Enter the Ɵme quantum: ");
+ scanf("%d", &Ɵme_quantum);
+ // Perform Round Robin Scheduling
+ roundRobinScheduling(processes, n, Ɵme_quantum);
+ return 0;
+}
